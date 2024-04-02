@@ -1,0 +1,35 @@
+﻿@page "/cameras"
+@using BlazorWasmApp.Client.Services.CameraService
+@using BlazorWasmApp.Shared.Domain.Entities
+@attribute [Authorize(Roles = "Administrator,User")]
+
+@inject ICameraService CameraService
+
+<PageTitle>Cameras</PageTitle>
+
+<MudText Typo="Typo.h3">Cameras</MudText>
+
+@if (cameras == null)
+{
+    <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
+}
+else
+{
+    <MudDataGrid Items="@cameras" Striped>
+        <Columns>
+            <PropertyColumn Property="x => x.Name" Title="Name" />
+            <PropertyColumn Property="x => x.Description" Title="Description" />
+            <PropertyColumn Property="x => x.Brand" Title="Brand" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
+        </Columns>
+    </MudDataGrid>
+}
+
+@code {
+    private List<Camera> cameras;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cameras = await CameraService.GetAll();
+    }
+}
