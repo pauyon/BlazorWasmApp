@@ -1,5 +1,7 @@
 using BlazorWasmApp.Server.Authentication;
+using BlazorWasmApp.Server.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -25,6 +27,9 @@ builder.Services.AddAuthentication(o =>
         ValidateAudience = false
     };
 });
+builder.Services.AddDbContext<SqlServerDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 builder.Services.AddSingleton<UserAccountService>();
 
