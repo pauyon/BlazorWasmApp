@@ -5,21 +5,19 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>Hello, @context.User.Identity.Name!</h1>
+        <MudText Typo="Typo.h3">Hello, @context.User.Identity.Name!</MudText>
     </Authorized>
     <NotAuthorized>
-        <h1>Hello, guest!</h1>
+        <MudText Typo="Typo.h3">Hello, guest!</MudText>
     </NotAuthorized>
 </AuthorizeView>
-
-Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <AuthorizeView>
     <Authorized>
         <br /><br />
-        <button class="btn btn-outline-primary" @onclick="DisplayGreetingAlert">Display Greeting Alert</button>
+        <MudButton OnClick="DisplayGreetingAlert" Variant="Variant.Filled" Color="Color.Info">Display Greeting Alert</MudButton>
     </Authorized>
 </AuthorizeView>
 

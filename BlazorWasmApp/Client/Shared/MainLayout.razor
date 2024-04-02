@@ -2,32 +2,41 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
-<div class="page">
-    <div class="sidebar">
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">BlazorWasmApp</MudText>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudButton OnClick="Logout" Variant="Variant.Filled" Color="Color.Info">Logout</MudButton>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton href="/login" Variant="Variant.Filled" Color="Color.Info">Login</MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
-    </div>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-            <AuthorizeView>
-                <Authorized>
-                    <a @onclick="Logout" href="javascript:void(0)">Logout</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a href="/login">Login</a>
-                </NotAuthorized>
-            </AuthorizeView>
-        </div>
+@code {
+    bool _drawerOpen = true;
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 
-@code 
-{
     private async Task Logout()
     {
         var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthenticationStateProvider;
