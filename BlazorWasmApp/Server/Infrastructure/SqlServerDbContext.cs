@@ -1,4 +1,4 @@
-﻿using BlazorWasmApp.Server.Domain.Entities;
+﻿using BlazorWasmApp.Shared.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorWasmApp.Server.Infrastructure

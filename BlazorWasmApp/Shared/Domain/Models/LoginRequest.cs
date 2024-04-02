@@ -1,4 +1,4 @@
-﻿namespace BlazorWasmApp.Shared.Models
+﻿namespace BlazorWasmApp.Shared.Domain.Models
 {
     public class LoginRequest
     {

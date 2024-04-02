@@ -1,4 +1,4 @@
-﻿namespace BlazorWasmApp.Server.Domain.Entities
+﻿namespace BlazorWasmApp.Shared.Domain.Entities
 {
     public class Camera : EntityBase
     {

@@ -1,5 +1,8 @@
 using BlazorWasmApp.Server.Authentication;
+using BlazorWasmApp.Server.Domain.Repositories;
 using BlazorWasmApp.Server.Infrastructure;
+using BlazorWasmApp.Server.Infrastructure.Mappings;
+using BlazorWasmApp.Server.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +34,17 @@ builder.Services.AddDbContext<SqlServerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddCors(options => options.AddPolicy("BlazorWasmApp", builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
 builder.Services.AddSingleton<UserAccountService>();
 
 
@@ -48,6 +62,14 @@ else
     app.UseHsts();
 }
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
@@ -57,6 +79,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("BlazorWasmApp");
 
 app.MapRazorPages();
 app.MapControllers();

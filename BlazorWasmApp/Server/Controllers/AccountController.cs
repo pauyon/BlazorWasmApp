@@ -1,6 +1,6 @@
 ﻿using BlazorWasmApp.Server.Authentication;
 using BlazorWasmApp.Shared;
-using BlazorWasmApp.Shared.Models;
+using BlazorWasmApp.Shared.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
