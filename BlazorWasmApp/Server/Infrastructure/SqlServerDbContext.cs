@@ -11,12 +11,17 @@ namespace BlazorWasmApp.Server.Infrastructure
         }
 
         DbSet<Camera> Cameras => Set<Camera>();
+        DbSet<Accessory> Accessories => Set<Accessory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Entity<Camera>()
                 .ToTable("Cameras", c => c.IsTemporal());
+
+            modelBuilder
+                .Entity<Accessory>()
+                .ToTable("Accessories", c => c.IsTemporal());
 
             base.OnModelCreating(modelBuilder);
         }

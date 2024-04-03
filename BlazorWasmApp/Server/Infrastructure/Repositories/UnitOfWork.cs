@@ -1,4 +1,5 @@
 ﻿using BlazorWasmApp.Server.Domain.Repositories;
+using BlazorWasmApp.Shared.Domain.Repositories;
 
 namespace BlazorWasmApp.Server.Infrastructure.Repositories
 {
@@ -10,9 +11,11 @@ namespace BlazorWasmApp.Server.Infrastructure.Repositories
         {
             _dbContext = dbContext;
             CameraRepository = new CameraRepository(dbContext);
+            AccessoryRepository = new AccessoryRepository(dbContext);
         }
 
         public ICameraRepository CameraRepository { get; private set; }
+        public IAccessoryRepository AccessoryRepository { get; private set; }
 
         public int Save()
         {

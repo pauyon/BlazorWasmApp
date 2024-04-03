@@ -1,6 +1,6 @@
 ﻿namespace BlazorWasmApp.Shared.Domain.Dtos
 {
-    public class CameraDto
+    public class AccessoryDto
     {
         public int Id { get; set; }
         public string? Serial { get; set; }
