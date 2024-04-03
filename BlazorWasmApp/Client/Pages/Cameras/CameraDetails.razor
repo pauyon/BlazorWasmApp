@@ -1,0 +1,75 @@
+﻿@page "/camera"
+@page "/camera/{CameraId:int}"
+@using BlazorWasmApp.Client.Services.CameraService
+@using BlazorWasmApp.Shared.Domain.Entities
+@attribute [Authorize(Roles = "Administrator,User")] 
+
+@inject NavigationManager NavigationManager
+@inject ICameraService CameraService
+
+<h3>CameraDetails</h3>
+
+@if (_camera == null)
+{
+    <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" sm="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Make" @bind-Value="_camera.Make" For="@(() => _camera.Make)" />
+                    <MudTextField Label="Model" @bind-Value="_camera.Model" For="@(() => _camera.Model)" />
+                    <MudTextField Label="Serial" @bind-Value="_camera.Serial" For="@(() => _camera.Serial)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <span class="ml-auto">
+                        <MudButton OnClick="RedirectToGrid" Variant="Variant.Filled" Color="Color.Error">Cancel</MudButton>
+                        <MudButton OnClick="Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+                    </span>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+
+
+@code {
+
+    [Parameter]
+    public int CameraId { get; set; }
+
+    private Camera? _camera;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CameraId != 0)
+        {
+            _camera = await CameraService!.GetById(CameraId);
+        }
+        else
+        {
+            _camera = new();
+        }
+    }
+
+    protected async Task Save()
+    {
+        if (CameraId == 0)
+        {
+            await CameraService.Add(_camera);
+        }
+        else
+        {
+            await CameraService.Update(_camera);
+        }
+
+        NavigationManager.NavigateTo("/cameras");
+    }
+
+    protected void RedirectToGrid()
+    {
+        NavigationManager.NavigateTo("/cameras");
+    }
+}

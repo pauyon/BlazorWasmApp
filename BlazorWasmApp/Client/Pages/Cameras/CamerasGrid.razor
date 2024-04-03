@@ -4,6 +4,7 @@
 @attribute [Authorize(Roles = "Administrator,User")]
 
 @inject ICameraService CameraService
+@inject NavigationManager NavigaitonManager
 
 <PageTitle>Cameras</PageTitle>
 
@@ -20,6 +21,14 @@ else
             <PropertyColumn Property="x => x.Make" Title="Make" />
             <PropertyColumn Property="x => x.Model" Title="Model" />
             <PropertyColumn Property="x => x.Serial" Title="Serial" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton OnClick="@(() => RedirectToDetails(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
+                        <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
         </Columns>
     </MudDataGrid>
 }
@@ -30,5 +39,14 @@ else
     protected override async Task OnInitializedAsync()
     {
         cameras = await CameraService.GetAll();
+    }
+
+    protected void RedirectToDetails(Camera camera)
+    {
+        NavigaitonManager.NavigateTo($"/camera/{camera.Id}");
+    }
+
+    protected async Task DeleteRecord(Camera camera)
+    {
     }
 }

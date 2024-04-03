@@ -48,7 +48,7 @@ namespace BlazorWasmApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<List<Camera>>> UpdateUser(Camera user)
         {
             var result = await _unitOfWork.CameraRepository.Update(user);
