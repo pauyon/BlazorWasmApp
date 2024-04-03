@@ -9,6 +9,7 @@ namespace BlazorWasmApp.Server.Infrastructure.Mappings
         public MappingConfig()
         {
             CreateMap<Camera, CameraDto>().ReverseMap();
+            CreateMap<Accessory, AccessoryDto>().ReverseMap();
         }
     }
 }
