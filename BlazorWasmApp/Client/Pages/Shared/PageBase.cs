@@ -5,13 +5,16 @@ namespace BlazorWasmApp.Client.Pages.Shared
 {
     public class PageBase : ComponentBase
     {
-        [Inject]
-        public NavigationManager? NavigationManager { get; set; }
-        
-        [Inject]
-        public IDialogService? DialogService { get; set; }
+        protected virtual string? TabTitle { get; set; }
+        protected virtual string? PageTitle { get; set; }
 
         [Inject]
-        public ISnackbar? Snackbar { get; set; }
+        protected NavigationManager? NavigationManager { get; set; }
+        
+        [Inject]
+        protected IDialogService? DialogService { get; set; }
+
+        [Inject]
+        protected ISnackbar? Snackbar { get; set; }
     }
 }

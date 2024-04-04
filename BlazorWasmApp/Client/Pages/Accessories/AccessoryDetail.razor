@@ -2,6 +2,8 @@
 @page "/accessory/{EntityId:int}"
 @inherits DetailsPageBase<Accessory, AccessoryHistory>
 
+<PageTitle>@TabTitle</PageTitle>
+
 @if (Entity == null)
 {
     <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
@@ -10,7 +12,7 @@ else
 {
     <MudGrid>
         <MudItem xs="12" sm="4">
-            <h3>Accessory Details</h3>
+            <h3>@PageTitle</h3>
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Make" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />

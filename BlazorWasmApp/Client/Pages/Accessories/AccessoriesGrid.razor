@@ -1,9 +1,9 @@
 ﻿@page "/accessories"
 @inherits GridPageBase<Accessory, AccessoryHistory>
 
-<PageTitle>Accessories</PageTitle>
+<PageTitle>@TabTitle</PageTitle>
 
-<MudText Typo="Typo.h3">Accessories</MudText>
+<MudText Typo="Typo.h3">@PageTitle</MudText>
 
 @if (Entities == null)
 {

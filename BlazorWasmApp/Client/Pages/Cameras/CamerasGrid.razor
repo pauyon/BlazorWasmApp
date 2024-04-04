@@ -1,9 +1,9 @@
 ﻿@page "/cameras"
 @inherits GridPageBase<Camera, CameraHistory>
 
-<PageTitle>Cameras</PageTitle>
+<PageTitle>@TabTitle</PageTitle>
 
-<MudText Typo="Typo.h3">Cameras</MudText>
+<MudText Typo="Typo.h3">@PageTitle</MudText>
 
 @if (Entities == null)
 {
