@@ -1,21 +1,19 @@
 ﻿@page "/cameras"
-@using BlazorWasmApp.Client.Services.CameraService
-@using BlazorWasmApp.Shared.Domain.Entities
-
-@inject ICameraService CameraService
-@inject NavigationManager NavigaitonManager
+@inherits GridPageBase<Camera, CameraHistory>
 
 <PageTitle>Cameras</PageTitle>
 
 <MudText Typo="Typo.h3">Cameras</MudText>
 
-@if (cameras == null)
+@if (Entities == null)
 {
     <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
 }
 else
 {
-    <MudDataGrid Items="@cameras" Striped>
+    <MudButton OnClick="@(() => AddEditRecord(null))" Variant="@Variant.Filled" Color="@Color.Success">Add</MudButton>
+
+    <MudDataGrid Items="@Entities" Striped>
         <Columns>
             <PropertyColumn Property="x => x.Make" Title="Make" />
             <PropertyColumn Property="x => x.Model" Title="Model" />
@@ -23,29 +21,11 @@ else
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudStack Row>
-                        <MudButton OnClick="@(() => RedirectToDetails(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
+                        <MudButton OnClick="@(() => AddEditRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
                         <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
     </MudDataGrid>
-}
-
-@code {
-    private List<Camera> cameras;
-
-    protected override async Task OnInitializedAsync()
-    {
-        cameras = await CameraService.GetAll();
-    }
-
-    protected void RedirectToDetails(Camera camera)
-    {
-        NavigaitonManager.NavigateTo($"/camera/{camera.Id}");
-    }
-
-    protected async Task DeleteRecord(Camera camera)
-    {
-    }
 }
