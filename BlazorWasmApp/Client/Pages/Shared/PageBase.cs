@@ -5,8 +5,9 @@ namespace BlazorWasmApp.Client.Pages.Shared
 {
     public class PageBase : ComponentBase
     {
-        protected virtual string? TabTitle { get; set; }
-        protected virtual string? PageTitle { get; set; }
+        public virtual PageDetails? PageDetails { get; set; } = new();
+
+        public virtual bool IsLoading { get; set; } = true;
 
         [Inject]
         protected NavigationManager? NavigationManager { get; set; }

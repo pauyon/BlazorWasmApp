@@ -1,0 +1,33 @@
+﻿@inherits ComponentBase
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <PageTitle>@PageDetails!.TabTitle</PageTitle>
+
+    @if (IsLoading)
+    {
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary">Loading...</MudProgressCircular>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudText Typo="Typo.h3">@PageDetails!.PageTitle</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                @GridContent
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public PageDetails? PageDetails { get; set; }
+
+    [Parameter]
+    public RenderFragment? GridContent { get; set; }
+}

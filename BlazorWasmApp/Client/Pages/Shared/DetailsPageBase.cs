@@ -20,8 +20,8 @@ namespace BlazorWasmApp.Client.Pages.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            TabTitle = typeof(TEntity).Name + " Details";
-            PageTitle = typeof(TEntity).Name + " Details";
+            PageDetails!.TabTitle = typeof(TEntity).Name + " Details";
+            PageDetails!.PageTitle = typeof(TEntity).Name + " Details";
 
             if (EntityId != 0)
             {
@@ -32,6 +32,8 @@ namespace BlazorWasmApp.Client.Pages.Shared
             {
                 Entity = new TEntity();
             }
+
+            IsLoading = Entity != null ? false : true;
         }
 
         protected async Task Save()

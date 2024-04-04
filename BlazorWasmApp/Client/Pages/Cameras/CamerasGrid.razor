@@ -1,31 +1,24 @@
 ﻿@page "/cameras"
 @inherits GridPageBase<Camera, CameraHistory>
 
-<PageTitle>@TabTitle</PageTitle>
+<GridPageTemplate IsLoading="@IsLoading" PageDetails="@PageDetails">
+    <GridContent>
+        <MudButton OnClick="@(() => AddEditRecord(null))" Variant="@Variant.Filled" Color="@Color.Success">Add</MudButton>
 
-<MudText Typo="Typo.h3">@PageTitle</MudText>
-
-@if (Entities == null)
-{
-    <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
-}
-else
-{
-    <MudButton OnClick="@(() => AddEditRecord(null))" Variant="@Variant.Filled" Color="@Color.Success">Add</MudButton>
-
-    <MudDataGrid Items="@Entities" Striped>
-        <Columns>
-            <PropertyColumn Property="x => x.Make" Title="Make" />
-            <PropertyColumn Property="x => x.Model" Title="Model" />
-            <PropertyColumn Property="x => x.Serial" Title="Serial" />
-            <TemplateColumn CellClass="d-flex justify-end">
-                <CellTemplate>
-                    <MudStack Row>
-                        <MudButton OnClick="@(() => AddEditRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
-                        <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
-                    </MudStack>
-                </CellTemplate>
-            </TemplateColumn>
-        </Columns>
-    </MudDataGrid>
-}
+        <MudDataGrid Items="@Entities" Striped>
+            <Columns>
+                <PropertyColumn Property="x => x.Make" Title="Make" />
+                <PropertyColumn Property="x => x.Model" Title="Model" />
+                <PropertyColumn Property="x => x.Serial" Title="Serial" />
+                <TemplateColumn CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudStack Row>
+                            <MudButton OnClick="@(() => AddEditRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
+                            <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </GridContent>
+</GridPageTemplate>

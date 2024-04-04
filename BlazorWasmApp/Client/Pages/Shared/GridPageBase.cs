@@ -16,9 +16,11 @@ namespace BlazorWasmApp.Client.Pages.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            TabTitle = typeof(TEntity).Name.Pluralize();
-            PageTitle = typeof(TEntity).Name.Pluralize();
+            PageDetails!.TabTitle = typeof(TEntity).Name.Pluralize();
+            PageDetails!.PageTitle = typeof(TEntity).Name.Pluralize();
             Entities = await EntityService!.GetAll();
+
+            IsLoading = Entities.Any() ? false : true;
         }
 
         protected virtual void AddEditRecord(TEntity? entity)
