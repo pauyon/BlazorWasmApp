@@ -29,13 +29,26 @@ namespace BlazorWasmApp.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Accessory>> GetAccessory(int id)
+        public async Task<ActionResult<Accessory>> GetById(int id)
         {
             var result = await _unitOfWork.AccessoryRepository.Get(x => x.Id == id);
 
             if (result == null)
             {
                 return NotFound("Accessory not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("temporal/{id}")]
+        public async Task<ActionResult<AccessoryHistory>> GetByIdTemporal(int id)
+        {
+            var result = await _unitOfWork.AccessoryRepository.GetByIdTemporal(id);
+
+            if (result == null)
+            {
+                return NotFound("User not found.");
             }
 
             return Ok(result);

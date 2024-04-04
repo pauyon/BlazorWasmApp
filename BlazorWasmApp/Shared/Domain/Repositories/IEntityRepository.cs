@@ -2,7 +2,8 @@
 
 namespace BlazorWasmApp.Server.Domain.Repositories
 {
-    public interface IEntityRepository<T> where T : class
+    public interface IEntityRepository<T> 
+        where T : class
     {
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? predicate = null);
         Task<T?> Get(Expression<Func<T, bool>> predicate, bool tracked = true);

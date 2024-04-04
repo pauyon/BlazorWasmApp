@@ -29,7 +29,7 @@ namespace BlazorWasmApp.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Camera>> GetUser(int id)
+        public async Task<ActionResult<Camera>> GetById(int id)
         {
             var result = await _unitOfWork.CameraRepository.Get(x => x.Id == id);
 
@@ -41,22 +41,35 @@ namespace BlazorWasmApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Camera>> AddUser(Camera user)
+        [HttpGet("temporal/{id}")]
+        public async Task<ActionResult<CameraHistory>> GetByIdTemporal(int id)
         {
-            var result = await _unitOfWork.CameraRepository.Add(user);
+            var result = await _unitOfWork.CameraRepository.GetByIdTemporal(id);
+
+            if (result == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Camera>> AddCamera(Camera camera)
+        {
+            var result = await _unitOfWork.CameraRepository.Add(camera);
             return Ok(result);
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<Camera>>> UpdateUser(Camera user)
+        public async Task<ActionResult<List<Camera>>> UpdateCamera(Camera camera)
         {
-            var result = await _unitOfWork.CameraRepository.Update(user);
+            var result = await _unitOfWork.CameraRepository.Update(camera);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteUser(int id)
+        public async Task<ActionResult<bool>> DeleteCamera(int id)
         {
             var result = await _unitOfWork.CameraRepository.Delete(id);
             return Ok(result);

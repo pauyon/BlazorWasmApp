@@ -1,13 +1,12 @@
 ﻿@page "/accessory"
-@page "/accessory/{CameraId:int}"
+@page "/accessory/{AccessoryId:int}"
 @using BlazorWasmApp.Client.Services.AccessoryService
 @using BlazorWasmApp.Shared.Domain.Entities
+@using BlazorWasmApp.Shared.Domain.Models
 @attribute [Authorize(Roles = "Administrator,User")]
 
 @inject NavigationManager NavigationManager
 @inject IAccessoryService AccessoryService
-
-<h3>AccessoryDetails</h3>
 
 @if (_accessory == null)
 {
@@ -17,6 +16,7 @@ else
 {
     <MudGrid>
         <MudItem xs="12" sm="4">
+            <h3>Accessory Details</h3>
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Make" @bind-Value="_accessory.Make" For="@(() => _accessory.Make)" />
@@ -30,6 +30,17 @@ else
                 </MudCardActions>
             </MudCard>
         </MudItem>
+        <MudItem xs="12" sm="8">
+            <h3>History</h3>
+            <MudCard>
+                <MudDataGrid Items="@_accessoryHistories" Striped>
+                    <Columns>
+                        <PropertyColumn Property="x => x.Make" Title="Make" />
+                        <PropertyColumn Property="x => x.Model" Title="Model" />
+                    </Columns>
+                </MudDataGrid>
+            </MudCard>
+        </MudItem>
     </MudGrid>
 }
 
@@ -37,15 +48,17 @@ else
 @code {
 
     [Parameter]
-    public int CameraId { get; set; }
+    public int AccessoryId { get; set; }
 
     private Accessory? _accessory;
+    private IEnumerable<AccessoryHistory>? _accessoryHistories;
 
     protected override async Task OnInitializedAsync()
     {
-        if (CameraId != 0)
+        if (AccessoryId != 0)
         {
-            _accessory = await AccessoryService!.GetById(CameraId);
+            _accessory = await AccessoryService!.GetById(AccessoryId);
+            _accessoryHistories = await AccessoryService!.GetByIdTemporal(AccessoryId);
         }
         else
         {
@@ -55,7 +68,7 @@ else
 
     protected async Task Save()
     {
-        if (CameraId == 0)
+        if (AccessoryId == 0)
         {
             await AccessoryService.Add(_accessory);
         }

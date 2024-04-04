@@ -40,6 +40,20 @@ namespace BlazorWasmApp.Server.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<T?> GetTemporal(Expression<Func<T, bool>> predicate, bool tracked = true)
+        {
+            IQueryable<T> query = _dbContext.Set<T>().TemporalAll();
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Where(predicate);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? predicate = null)
         {
             IQueryable<T> query = _dbContext.Set<T>();

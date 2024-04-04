@@ -2,12 +2,11 @@
 @page "/camera/{CameraId:int}"
 @using BlazorWasmApp.Client.Services.CameraService
 @using BlazorWasmApp.Shared.Domain.Entities
+@using BlazorWasmApp.Shared.Domain.Models
 @attribute [Authorize(Roles = "Administrator,User")] 
 
 @inject NavigationManager NavigationManager
 @inject ICameraService CameraService
-
-<h3>CameraDetails</h3>
 
 @if (_camera == null)
 {
@@ -17,6 +16,7 @@ else
 {
     <MudGrid>
         <MudItem xs="12" sm="4">
+            <h3>Camera Details</h3>
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Make" @bind-Value="_camera.Make" For="@(() => _camera.Make)" />
@@ -31,6 +31,20 @@ else
                 </MudCardActions>
             </MudCard>
         </MudItem>
+        <MudItem xs="12" sm="8">
+            <h3>History</h3>
+            <MudCard>
+                <MudDataGrid Items="@_cameraHistories" Striped>
+                    <Columns>
+                        <PropertyColumn Property="x => x.Make" Title="Make" />
+                        <PropertyColumn Property="x => x.Model" Title="Model" />
+                        <PropertyColumn Property="x => x.Serial" Title="Serial" />
+                        <PropertyColumn Property="x => x.PeriodStart" Title="Period Start" />
+                        <PropertyColumn Property="x => x.PeriodEnd" Title="Period End" />
+                    </Columns>
+                </MudDataGrid>
+            </MudCard>
+        </MudItem>
     </MudGrid>
 }
 
@@ -41,12 +55,14 @@ else
     public int CameraId { get; set; }
 
     private Camera? _camera;
+    private IEnumerable<CameraHistory>? _cameraHistories;
 
     protected override async Task OnInitializedAsync()
     {
         if (CameraId != 0)
         {
             _camera = await CameraService!.GetById(CameraId);
+            _cameraHistories = await CameraService!.GetByIdTemporal(CameraId);
         }
         else
         {

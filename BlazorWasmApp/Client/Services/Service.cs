@@ -4,8 +4,9 @@ using System.Text;
 
 namespace BlazorWasmApp.Client.Services
 {
-    public abstract class Service<TEntity> : IService<TEntity>
+    public abstract class Service<TEntity, THistory> : IService<TEntity, THistory>
         where TEntity : class, IEntityBase, new()
+        where THistory : class, new()
     {
         private readonly HttpClient _httpClient;
         private readonly string _controller;
@@ -76,6 +77,21 @@ namespace BlazorWasmApp.Client.Services
             }
 
             return new TEntity();
+        }
+
+        public virtual async Task<IEnumerable<THistory>?> GetByIdTemporal(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/{_controller}/temporal/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var entities = JsonConvert.DeserializeObject<IEnumerable<THistory>>(content);
+
+                return entities ?? new List<THistory>();
+            }
+
+            return new List<THistory>();
         }
 
         public async Task<bool> Update(TEntity entity)
