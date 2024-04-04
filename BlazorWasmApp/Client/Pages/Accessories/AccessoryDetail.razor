@@ -1,0 +1,74 @@
+﻿@page "/accessory"
+@page "/accessory/{CameraId:int}"
+@using BlazorWasmApp.Client.Services.AccessoryService
+@using BlazorWasmApp.Shared.Domain.Entities
+@attribute [Authorize(Roles = "Administrator,User")]
+
+@inject NavigationManager NavigationManager
+@inject IAccessoryService AccessoryService
+
+<h3>AccessoryDetails</h3>
+
+@if (_accessory == null)
+{
+    <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" sm="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Make" @bind-Value="_accessory.Make" For="@(() => _accessory.Make)" />
+                    <MudTextField Label="Model" @bind-Value="_accessory.Model" For="@(() => _accessory.Model)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <span class="ml-auto">
+                        <MudButton OnClick="RedirectToGrid" Variant="Variant.Filled" Color="Color.Error">Cancel</MudButton>
+                        <MudButton OnClick="Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+                    </span>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+
+
+@code {
+
+    [Parameter]
+    public int CameraId { get; set; }
+
+    private Accessory? _accessory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CameraId != 0)
+        {
+            _accessory = await AccessoryService!.GetById(CameraId);
+        }
+        else
+        {
+            _accessory = new();
+        }
+    }
+
+    protected async Task Save()
+    {
+        if (CameraId == 0)
+        {
+            await AccessoryService.Add(_accessory);
+        }
+        else
+        {
+            await AccessoryService.Update(_accessory);
+        }
+
+        NavigationManager.NavigateTo("/accessories");
+    }
+
+    protected void RedirectToGrid()
+    {
+        NavigationManager.NavigateTo("/accessories");
+    }
+}

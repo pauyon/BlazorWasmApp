@@ -1,0 +1,51 @@
+﻿@page "/accessories"
+@using BlazorWasmApp.Client.Services.AccessoryService
+@using BlazorWasmApp.Shared.Domain.Entities
+@attribute [Authorize(Roles = "Administrator,User")]
+
+@inject IAccessoryService AccessoryService
+@inject NavigationManager NavigaitonManager
+
+<PageTitle>Accessories</PageTitle>
+
+<MudText Typo="Typo.h3">Accessories</MudText>
+
+@if (accessories == null)
+{
+    <MudProgressCircular Indeterminate="true">Loading...</MudProgressCircular>
+}
+else
+{
+    <MudDataGrid Items="@accessories" Striped>
+        <Columns>
+            <PropertyColumn Property="x => x.Make" Title="Make" />
+            <PropertyColumn Property="x => x.Model" Title="Model" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton OnClick="@(() => RedirectToDetails(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
+                        <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
+
+@code {
+    private List<Accessory> accessories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accessories = await AccessoryService.GetAll();
+    }
+
+    protected void RedirectToDetails(Accessory accessory)
+    {
+        NavigaitonManager.NavigateTo($"/accessory/{accessory.Id}");
+    }
+
+    protected async Task DeleteRecord(Accessory accessory)
+    {
+    }
+}
