@@ -1,7 +1,6 @@
 ﻿@page "/cameras"
 @using BlazorWasmApp.Client.Services.CameraService
 @using BlazorWasmApp.Shared.Domain.Entities
-@attribute [Authorize(Roles = "Administrator,User")]
 
 @inject ICameraService CameraService
 @inject NavigationManager NavigaitonManager
