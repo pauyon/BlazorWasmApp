@@ -1,6 +1,4 @@
-﻿using BlazorWasmApp.Shared.Domain.Repositories;
-
-namespace BlazorWasmApp.Server.Infrastructure.Repositories
+﻿namespace BlazorWasmApp.Server.Infrastructure.Repositories
 {
     public class EntityTemporalRepository<THistory>
         where THistory : class
