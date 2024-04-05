@@ -42,9 +42,9 @@ namespace BlazorWasmApp.Server.Controllers
         }
 
         [HttpGet("temporal/{id}")]
-        public async Task<ActionResult<AccessoryHistory>> GetByIdTemporal(int id)
+        public async Task<ActionResult<Accessory>> GetByIdTemporal(int id)
         {
-            var result = await _unitOfWork.AccessoryRepository.GetByIdTemporal(id);
+            var result = await _unitOfWork.AccessoryRepository.GetTemporal(id);
 
             if (result == null)
             {

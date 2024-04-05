@@ -1,7 +1,7 @@
 ﻿using BlazorWasmApp.Server.Domain.Repositories;
 using BlazorWasmApp.Shared.Domain.Entities;
-using BlazorWasmApp.Shared.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BlazorWasmApp.Server.Infrastructure.Repositories
 {
@@ -14,21 +14,21 @@ namespace BlazorWasmApp.Server.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<CameraHistory>> GetByIdTemporal(int id)
+        public override async Task<IEnumerable<Camera>?> GetTemporal(int id)
         {
             return await _dbContext.Set<Camera>()
                 .TemporalAll()
                 .OrderBy(c => EF.Property<DateTime>(c, "PeriodStart"))
                 .Where(x => x.Id == id)
                 .Select(x =>
-                    new CameraHistory
+                    new Camera
                     {
                         Id = x.Id,
                         Make = x.Make,
                         Model = x.Model,
                         Serial = x.Serial,
-                        PeriodStart = EF.Property<DateTime>(x, "PeriodStart"),
-                        PeriodEnd = EF.Property<DateTime>(x, "PeriodEnd"),
+                        DisplayPeriodStart = EF.Property<DateTime>(x, "PeriodStart"),
+                        DisplayPeriodEnd = EF.Property<DateTime>(x, "PeriodEnd"),
                     }
                 ).ToListAsync();
         }

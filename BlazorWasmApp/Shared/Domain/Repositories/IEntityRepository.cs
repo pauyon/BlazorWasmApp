@@ -1,12 +1,14 @@
-﻿using System.Linq.Expressions;
+﻿using BlazorWasmApp.Shared.Domain.Entities.Interfaces;
+using System.Linq.Expressions;
 
 namespace BlazorWasmApp.Server.Domain.Repositories
 {
     public interface IEntityRepository<T> 
-        where T : class
+        where T : class, IEntityBase
     {
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? predicate = null);
         Task<T?> Get(Expression<Func<T, bool>> predicate, bool tracked = true);
+        Task<IEnumerable<T>?> GetTemporal(int id);
         Task<T> Add(T entity);
         Task AddRange(IEnumerable<T> entities);
         Task<bool> Delete(int id);

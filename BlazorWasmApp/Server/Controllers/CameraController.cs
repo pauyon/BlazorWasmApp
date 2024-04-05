@@ -42,9 +42,9 @@ namespace BlazorWasmApp.Server.Controllers
         }
 
         [HttpGet("temporal/{id}")]
-        public async Task<ActionResult<CameraHistory>> GetByIdTemporal(int id)
+        public async Task<ActionResult<Camera>> GetByIdTemporal(int id)
         {
-            var result = await _unitOfWork.CameraRepository.GetByIdTemporal(id);
+            var result = await _unitOfWork.CameraRepository.GetTemporal(id);
 
             if (result == null)
             {

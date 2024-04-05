@@ -1,6 +1,6 @@
 ﻿@page "/camera"
 @page "/camera/{EntityId:int}"
-@inherits DetailsPageBase<Camera, CameraHistory>
+@inherits DetailsPageBase<Camera>
 
 <DetailsPageTemplate IsLoading="@IsLoading" PageDetails="@PageDetails">
     <DetailsContent>
@@ -25,8 +25,8 @@
                     <PropertyColumn Property="x => x.Make" Title="Make" />
                     <PropertyColumn Property="x => x.Model" Title="Model" />
                     <PropertyColumn Property="x => x.Serial" Title="Serial" />
-                    <PropertyColumn Property="x => x.PeriodStart" Title="Period Start" />
-                    <PropertyColumn Property="x => x.PeriodEnd" Title="Period End" />
+                    <PropertyColumn Property="x => x.DisplayPeriodStart" Title="Period Start" />
+                    <PropertyColumn Property="x => x.DisplayPeriodEnd" Title="Period End" />
                 </Columns>
             </MudDataGrid>
         </MudCard>

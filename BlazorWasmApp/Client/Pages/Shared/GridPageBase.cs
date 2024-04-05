@@ -5,14 +5,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorWasmApp.Client.Pages.Shared
 {
-    public class GridPageBase<TEntity, THistory> : PageBase
-        where TEntity : class, IEntityBase
-        where THistory : class
+    public class GridPageBase<TEntity> : PageBase
+        where TEntity : class, IEntityBase, new()
     {
         protected List<TEntity>? Entities { get; set; }
 
         [Inject]
-        protected IService<TEntity, THistory>? EntityService { get; set; }
+        protected IService<TEntity>? EntityService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,7 +19,7 @@ namespace BlazorWasmApp.Client.Pages.Shared
             PageDetails!.PageTitle = typeof(TEntity).Name.Pluralize();
             Entities = await EntityService!.GetAll();
 
-            IsLoading = Entities.Any() ? false : true;
+            IsLoading = Entities != null ? false : true;
         }
 
         protected virtual void AddEditRecord(TEntity? entity)

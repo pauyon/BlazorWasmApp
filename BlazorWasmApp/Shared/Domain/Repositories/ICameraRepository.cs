@@ -4,7 +4,7 @@ using BlazorWasmApp.Shared.Domain.Repositories;
 
 namespace BlazorWasmApp.Server.Domain.Repositories
 {
-    public interface ICameraRepository : IEntityRepository<Camera>, IEntityTemporalRepository<CameraHistory>
+    public interface ICameraRepository : IEntityRepository<Camera>
     {
     }
 }

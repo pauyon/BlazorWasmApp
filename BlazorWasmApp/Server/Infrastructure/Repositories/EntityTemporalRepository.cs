@@ -2,7 +2,7 @@
 
 namespace BlazorWasmApp.Server.Infrastructure.Repositories
 {
-    public class EntityTemporalRepository<THistory> : IEntityTemporalRepository<THistory>
+    public class EntityTemporalRepository<THistory>
         where THistory : class
     {
         public virtual Task<IEnumerable<THistory>> GetByIdTemporal(int id)

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using BlazorWasmApp.Server.Domain.Repositories;
+using BlazorWasmApp.Shared.Domain.Entities.Interfaces;
 
 namespace BlazorWasmApp.Server.Infrastructure.Repositories
 {
-    public class EntityRepository<T> : IEntityRepository<T> where T : class
+    public class EntityRepository<T> : IEntityRepository<T> 
+        where T : class, IEntityBase
     {
         private readonly SqlServerDbContext _dbContext;
 
@@ -40,18 +42,13 @@ namespace BlazorWasmApp.Server.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<T?> GetTemporal(Expression<Func<T, bool>> predicate, bool tracked = true)
+        public virtual async Task<IEnumerable<T>?> GetTemporal(int id)
         {
             IQueryable<T> query = _dbContext.Set<T>().TemporalAll();
 
-            if (!tracked)
-            {
-                query = query.AsNoTracking();
-            }
+            query = query.Where(x => x.Id == id);
 
-            query = query.Where(predicate);
-
-            return await query.FirstOrDefaultAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? predicate = null)

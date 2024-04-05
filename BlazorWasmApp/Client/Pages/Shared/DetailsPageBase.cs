@@ -5,18 +5,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorWasmApp.Client.Pages.Shared
 {
-    public class DetailsPageBase<TEntity, THistory> : PageBase
+    public class DetailsPageBase<TEntity> : PageBase
         where TEntity : class, IEntityBase, new()
-        where THistory : class
     {
         [Parameter]
         public int EntityId { get; set; }
 
         [Inject]
-        protected IService<TEntity, THistory>? EntityService { get; set; }
+        protected IService<TEntity>? EntityService { get; set; }
 
         protected TEntity? Entity;
-        protected IEnumerable<THistory>? EntityHistories;
+        protected IEnumerable<TEntity>? EntityHistories;
 
         protected override async Task OnInitializedAsync()
         {
