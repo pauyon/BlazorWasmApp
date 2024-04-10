@@ -1,7 +1,20 @@
-﻿
-<div style="margin-top: 20%">
+﻿<div style="@(HasTopSpace ? "margin-top: 20%" : "")">
     <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row>
-        <MudText Typo="Typo.h3">Loading...</MudText>
+        @if (ShowText)
+        {
+            <MudText Typo="Typo.h3">@Message</MudText>
+        }
         <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
     </MudStack>
 </div>
+
+@code {
+    [Parameter]
+    public bool ShowText { get; set; } = true;
+
+    [Parameter]
+    public bool HasTopSpace { get; set; } = true;
+
+    [Parameter]
+    public string Message { get; set; } = "Loading...";
+}
