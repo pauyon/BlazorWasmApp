@@ -1,4 +1,5 @@
-﻿@inherits ComponentBase
+﻿@typeparam TEntity where TEntity : IEntityBase
+@inherits ComponentBase
 
 <PageTitle>@PageDetails!.TabTitle</PageTitle>
 
@@ -12,6 +13,9 @@ else
         <MudGrid>
             <MudItem xs="12" sm="12" md="12" lg="12">
                 <MudText Typo="Typo.h3">@PageDetails!.PageTitle</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudButton @attributes="UIConstants.ButtonNew()" OnClick="AddEditRecord">Add</MudButton>
             </MudItem>
             <MudItem xs="12" sm="12" md="12" lg="12">
                 @GridContent
@@ -30,4 +34,12 @@ else
 
     [Parameter]
     public RenderFragment? GridContent { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> AddEditCallback { get; set; }
+
+    protected async Task AddEditRecord()
+    {
+        await AddEditCallback.InvokeAsync();
+    }
 }

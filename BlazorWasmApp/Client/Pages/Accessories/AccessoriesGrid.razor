@@ -1,19 +1,17 @@
 ﻿@page "/accessories"
 @inherits GridPageBase<Accessory>
 
-<GridPageTemplate IsLoading="@IsLoading" PageDetails="@PageDetails">
+<GridPageTemplate TEntity="Accessory" IsLoading="@IsLoading" PageDetails="@PageDetails" AddEditCallback="AddEditRecord">
     <GridContent>
-        <MudButton OnClick="@(() => AddEditRecord(null))" Variant="@Variant.Filled" Color="@Color.Success">Add</MudButton>
-
-        <MudDataGrid Items="@Entities" Striped>
+        <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Accessory).Name)" Items="@Entities">
             <Columns>
                 <PropertyColumn Property="x => x.Make" Title="Make" />
                 <PropertyColumn Property="x => x.Model" Title="Model" />
                 <TemplateColumn CellClass="d-flex justify-end">
                     <CellTemplate>
                         <MudStack Row>
-                            <MudButton OnClick="@(() => AddEditRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
-                            <MudButton OnClick="@(() => DeleteRecord(context.Item))" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                            <MudButton @attributes="UIConstants.ButtonEdit()" OnClick="@(() => AddEditRecord(context.Item))">Edit</MudButton>
+                            <MudButton @attributes="UIConstants.ButtonDelete()" OnClick="@(() => DeleteRecord(context.Item))">Delete</MudButton>
                         </MudStack>
                     </CellTemplate>
                 </TemplateColumn>

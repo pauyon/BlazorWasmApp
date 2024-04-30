@@ -6,20 +6,20 @@
     <DetailsContent>
         <MudCard>
             <MudCardContent>
-                <MudTextField Label="Make" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />
-                <MudTextField Label="Model" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Make))" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Model))" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
             </MudCardContent>
             <MudCardActions>
                 <span class="ml-auto">
-                    <MudButton OnClick="RedirectToGrid" Variant="Variant.Filled" Color="Color.Error">Cancel</MudButton>
-                    <MudButton OnClick="Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+                    <MudButton @attributes="UIConstants.ButtonCancel()" OnClick="RedirectToGrid">Cancel</MudButton>
+                    <MudButton @attributes="UIConstants.ButtonSave()" OnClick="Save">Save</MudButton>
                 </span>
             </MudCardActions>
         </MudCard>
     </DetailsContent>
     <HistoryContent>
         <MudCard>
-            <MudDataGrid Items="@EntityHistories" Striped>
+            <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Accessory).Name)" Items="@EntityHistories" Striped>
                 <Columns>
                     <PropertyColumn Property="x => x.Make" Title="Make" />
                     <PropertyColumn Property="x => x.Model" Title="Model" />
