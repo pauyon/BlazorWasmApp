@@ -12,15 +12,11 @@
                 <PropertyColumn Property="x => x.Make" Title="Make" />
                 <PropertyColumn Property="x => x.Model" Title="Model" />
                 <PropertyColumn Property="x => x.Serial" Title="Serial" />
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudStack Row>
-                            <MudButton @attributes="UIConstants.ButtonEdit()" OnClick="@(() => AddEditRecord(context.Item))">Edit</MudButton>
-                            <MudButton @attributes="UIConstants.ButtonDelete()" OnClick="@(() => DeleteRecord(context.Item))">Delete</MudButton>
-                        </MudStack>
-                    </CellTemplate>
-                </TemplateColumn>
+                <GridActionsColumn TEntity="Camera" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord" />
             </Columns>
+            <PagerContent>
+                <MudDataGridPager T="Camera" />
+            </PagerContent>
         </MudDataGrid>
     </GridContent>
 </GridPageTemplate>
@@ -29,11 +25,11 @@
     private Func<Camera, bool> QuickFilter => x =>
     {
         var properties = new List<object?>
-            {
+        {
             x?.Id,
             x?.Make,
             x?.Model,
-            };
+        };
 
         return RowContainsSearchString(properties);
     };
