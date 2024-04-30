@@ -1,4 +1,5 @@
-﻿@inherits ComponentBase
+﻿@typeparam TEntity where TEntity : IEntityBase
+@inherits ComponentBase
 
 <PageTitle>@PageDetails!.TabTitle</PageTitle>
 
@@ -16,6 +17,13 @@ else
             <MudItem xs="12" sm="12" md="12" lg="12">
                 @DetailsContent
             </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudStack AlignItems="AlignItems.Start" Justify="Justify.FlexEnd" Row>
+                    <MudButton @attributes="UIConstants.ButtonCancel()" @onclick="RedirectToGrid">Cancel</MudButton>
+                    <MudButton @attributes="UIConstants.ButtonSave()" @onclick="@(async () => await Save())">@(IsNewRecord ? "Add" : "Update")</MudButton>
+                </MudStack>
+            </MudItem>
+
             @if (HistoryContent != null)
             {
                 <MudItem xs="12" sm="12" md="12" lg="12">
@@ -33,6 +41,9 @@ else
     public bool IsLoading { get; set; }
 
     [Parameter]
+    public bool IsNewRecord { get; set; }
+
+    [Parameter]
     public PageDetails? PageDetails { get; set; }
 
     [Parameter]
@@ -40,4 +51,20 @@ else
 
     [Parameter]
     public RenderFragment? HistoryContent { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> CancelCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> SaveCallback { get; set; }
+
+    protected async Task RedirectToGrid()
+    {
+        await CancelCallback.InvokeAsync();
+    }
+
+    protected async Task Save()
+    {
+        await SaveCallback.InvokeAsync();
+    }
 }

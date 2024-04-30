@@ -2,19 +2,13 @@
 @page "/accessory/{EntityId:int}"
 @inherits DetailsPageBase<Accessory>
 
-<DetailsPageTemplate IsLoading="@IsLoading" PageDetails="@PageDetails">
+<DetailsPageTemplate TEntity="Accessory" IsLoading="@IsLoading" IsNewRecord="@IsNewRecord" PageDetails="@PageDetails" CancelCallback="RedirectToGrid" SaveCallback="Save">
     <DetailsContent>
         <MudCard>
             <MudCardContent>
                 <MudTextField @attributes="UIConstants.Field(nameof(Entity.Make))" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />
                 <MudTextField @attributes="UIConstants.Field(nameof(Entity.Model))" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
             </MudCardContent>
-            <MudCardActions>
-                <span class="ml-auto">
-                    <MudButton @attributes="UIConstants.ButtonCancel()" OnClick="RedirectToGrid">Cancel</MudButton>
-                    <MudButton @attributes="UIConstants.ButtonSave()" OnClick="Save">Save</MudButton>
-                </span>
-            </MudCardActions>
         </MudCard>
     </DetailsContent>
     <HistoryContent>

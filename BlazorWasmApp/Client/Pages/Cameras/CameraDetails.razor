@@ -2,7 +2,7 @@
 @page "/camera/{EntityId:int}"
 @inherits DetailsPageBase<Camera>
 
-<DetailsPageTemplate IsLoading="@IsLoading" PageDetails="@PageDetails">
+<DetailsPageTemplate TEntity="Camera" IsLoading="@IsLoading" IsNewRecord=@IsNewRecord PageDetails="@PageDetails" CancelCallback="RedirectToGrid" SaveCallback="Save">
     <DetailsContent>
         <MudCard>
             <MudCardContent>
@@ -10,12 +10,6 @@
                 <MudTextField @attributes="UIConstants.Field(nameof(Entity.Model))" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
                 <MudTextField @attributes="UIConstants.Field(nameof(Entity.Serial))" @bind-Value="Entity.Serial" For="@(() => Entity.Serial)" />
             </MudCardContent>
-            <MudCardActions>
-                <span class="ml-auto">
-                    <MudButton @attributes="UIConstants.ButtonCancel()" OnClick="RedirectToGrid">Cancel</MudButton>
-                    <MudButton @attributes="UIConstants.ButtonSave()" OnClick="Save">Save</MudButton>
-                </span>
-            </MudCardActions>
         </MudCard>
     </DetailsContent>
     <HistoryContent>

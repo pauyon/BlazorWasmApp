@@ -17,6 +17,14 @@ namespace BlazorWasmApp.Client.Pages.Shared
         protected TEntity? Entity;
         protected IEnumerable<TEntity>? EntityHistories;
 
+        protected bool IsNewRecord
+        {
+            get
+            {
+                return Entity?.Id == null || Entity.Id == 0;
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             PageDetails!.TabTitle = typeof(TEntity).Name + " Details";

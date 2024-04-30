@@ -12,7 +12,7 @@
                 <PropertyColumn Property="x => x.Make" Title="Make" />
                 <PropertyColumn Property="x => x.Model" Title="Model" />
                 <PropertyColumn Property="x => x.Serial" Title="Serial" />
-                <GridActionsColumn TEntity="Camera" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord" />
+                <GridColumnActions TEntity="Camera" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord" />
             </Columns>
             <PagerContent>
                 <MudDataGridPager T="Camera" />

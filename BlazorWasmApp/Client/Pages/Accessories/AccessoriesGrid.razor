@@ -11,7 +11,7 @@
             <Columns>
                 <PropertyColumn Property="x => x.Make" Title="Make" />
                 <PropertyColumn Property="x => x.Model" Title="Model" />
-                <GridActionsColumn TEntity="Accessory" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord"/>
+                <GridColumnActions TEntity="Accessory" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord"/>
             </Columns>
             <PagerContent>
                 <MudDataGridPager T="Accessory" />
