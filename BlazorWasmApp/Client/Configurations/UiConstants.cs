@@ -160,8 +160,8 @@ public static class UIConstants
 
         Dictionary<string, object> attributes = new()
         {
-            { "Label", $"field_{label}"},
-            { "id", GenerateHtmlId(label) },
+            { "id", $"field_{GenerateHtmlId(label)}" },
+            { "Label", label},
             { "Immediate", true },
             { "Variant", _formFieldVariation },
             { "OnlyValidateIfDirty", true },

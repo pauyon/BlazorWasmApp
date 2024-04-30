@@ -15,7 +15,7 @@ else
                 <MudText Typo="Typo.h3">@PageDetails!.PageTitle</MudText>
             </MudItem>
             <MudItem xs="12" sm="12" md="12" lg="12">
-                <MudButton @attributes="UIConstants.ButtonNew()" OnClick="AddEditRecord">Add</MudButton>
+                <MudButton @attributes="UIConstants.ButtonNew()" OnClick="AddEditRecord">Add @(typeof(TEntity).Name)</MudButton>
             </MudItem>
             <MudItem xs="12" sm="12" md="12" lg="12">
                 @GridContent
