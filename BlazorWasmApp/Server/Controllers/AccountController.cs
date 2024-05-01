@@ -4,35 +4,34 @@ using BlazorWasmApp.Shared.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlazorWasmApp.Server.Controllers
+namespace BlazorWasmApp.Server.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AccountController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    private UserAccountService _userAccountService;
+
+    public AccountController(UserAccountService userAccountService)
     {
-        private UserAccountService _userAccountService;
+        _userAccountService = userAccountService;
+    }
 
-        public AccountController(UserAccountService userAccountService)
+    [HttpPost]
+    [Route("Login")]
+    [AllowAnonymous]
+    public ActionResult<UserSession> Login([FromBody] LoginRequest loginRequest)
+    {
+        var jwtAuthenticationManager = new JwtAuthenticationManager(_userAccountService);
+        var userSession = jwtAuthenticationManager.GenerateJwtToken(loginRequest.UserName, loginRequest.Password);
+
+        if (userSession == null)
         {
-            _userAccountService = userAccountService;
+            return Unauthorized();
         }
-
-        [HttpPost]
-        [Route("Login")]
-        [AllowAnonymous]
-        public ActionResult<UserSession> Login([FromBody] LoginRequest loginRequest)
+        else
         {
-            var jwtAuthenticationManager = new JwtAuthenticationManager(_userAccountService);
-            var userSession = jwtAuthenticationManager.GenerateJwtToken(loginRequest.UserName, loginRequest.Password);
-
-            if (userSession == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                return userSession;
-            }
+            return userSession;
         }
     }
 }

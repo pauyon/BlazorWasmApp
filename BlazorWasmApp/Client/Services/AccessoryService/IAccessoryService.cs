@@ -1,8 +1,7 @@
 ﻿using BlazorWasmApp.Shared.Domain.Entities;
 
-namespace BlazorWasmApp.Client.Services.AccessoryService
+namespace BlazorWasmApp.Client.Services.AccessoryService;
+
+public interface IAccessoryService : IService<Accessory>
 {
-    public interface IAccessoryService : IService<Accessory>
-    {
-    }
 }

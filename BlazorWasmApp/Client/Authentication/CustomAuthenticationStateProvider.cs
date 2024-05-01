@@ -4,84 +4,83 @@ using BlazorWasmApp.Shared;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace BlazorWasmApp.Client.Authentication
+namespace BlazorWasmApp.Client.Authentication;
+
+public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
-    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
+    private readonly ISessionStorageService _sessionStorageService;
+    private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+
+    public CustomAuthenticationStateProvider(ISessionStorageService sessionStorageService)
     {
-        private readonly ISessionStorageService _sessionStorageService;
-        private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+        _sessionStorageService = sessionStorageService;
+    }
 
-        public CustomAuthenticationStateProvider(ISessionStorageService sessionStorageService)
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    {
+        try
         {
-            _sessionStorageService = sessionStorageService;
-        }
+            var userSession = await _sessionStorageService.ReadEncryptedItemAsync<UserSession>("UserSession");
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            try
-            {
-                var userSession = await _sessionStorageService.ReadEncryptedItemAsync<UserSession>("UserSession");
-
-                if (userSession == null)
-                {
-                    return await Task.FromResult(new AuthenticationState(_anonymous));
-                }
-
-                var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                { 
-                    new Claim(ClaimTypes.Name, userSession.UserName),
-                    new Claim(ClaimTypes.Role, userSession.Role),
-                }, "JwtAuth"));
-
-                return await Task.FromResult(new AuthenticationState(claimsPrincipal));
-            }
-            catch
+            if (userSession == null)
             {
                 return await Task.FromResult(new AuthenticationState(_anonymous));
             }
-        }
 
-        public async Task UpdateAuthenticationState(UserSession? userSession)
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            { 
+                new Claim(ClaimTypes.Name, userSession.UserName),
+                new Claim(ClaimTypes.Role, userSession.Role),
+            }, "JwtAuth"));
+
+            return await Task.FromResult(new AuthenticationState(claimsPrincipal));
+        }
+        catch
         {
-            ClaimsPrincipal claimsPrincipal;
-
-            if (userSession != null)
-            {
-                claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, userSession.UserName),
-                    new Claim(ClaimTypes.Role, userSession.Role)
-                }));
-                userSession.ExpiryTimeStamp = DateTime.Now.AddSeconds(userSession.ExpiresIn);
-                await _sessionStorageService.SaveItemEncryptedAsync("UserSession", userSession);
-            }
-            else
-            {
-                claimsPrincipal = _anonymous;
-                await _sessionStorageService.RemoveItemAsync("UserSession");
-            }
-
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+            return await Task.FromResult(new AuthenticationState(_anonymous));
         }
+    }
 
-        public async Task<string> GetToken()
+    public async Task UpdateAuthenticationState(UserSession? userSession)
+    {
+        ClaimsPrincipal claimsPrincipal;
+
+        if (userSession != null)
         {
-            var result = string.Empty;
-
-            try
+            claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
-                var userSession = await _sessionStorageService.ReadEncryptedItemAsync<UserSession>("UserSession");
-                if (userSession != null && DateTime.Now < userSession.ExpiryTimeStamp)
-                {
-                    result = userSession.Token;
-                }
-            }
-            catch
-            {
-
-            }
-
-            return result;
+                new Claim(ClaimTypes.Name, userSession.UserName),
+                new Claim(ClaimTypes.Role, userSession.Role)
+            }));
+            userSession.ExpiryTimeStamp = DateTime.Now.AddSeconds(userSession.ExpiresIn);
+            await _sessionStorageService.SaveItemEncryptedAsync("UserSession", userSession);
         }
+        else
+        {
+            claimsPrincipal = _anonymous;
+            await _sessionStorageService.RemoveItemAsync("UserSession");
+        }
+
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+    }
+
+    public async Task<string> GetToken()
+    {
+        var result = string.Empty;
+
+        try
+        {
+            var userSession = await _sessionStorageService.ReadEncryptedItemAsync<UserSession>("UserSession");
+            if (userSession != null && DateTime.Now < userSession.ExpiryTimeStamp)
+            {
+                result = userSession.Token;
+            }
+        }
+        catch
+        {
+
+        }
+
+        return result;
     }
 }

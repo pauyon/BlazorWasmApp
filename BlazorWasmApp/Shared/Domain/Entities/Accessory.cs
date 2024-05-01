@@ -1,6 +1,5 @@
-﻿namespace BlazorWasmApp.Shared.Domain.Entities
+﻿namespace BlazorWasmApp.Shared.Domain.Entities;
+
+public class Accessory : EntityBase
 {
-    public class Accessory : EntityBase
-    {
-    }
 }

@@ -1,12 +1,11 @@
-﻿using BlazorWasmApp.Shared.Domain.Entities;
-using BlazorWasmApp.Shared.Domain.Models;
+﻿using BlazorWasmApp.Configurations;
+using BlazorWasmApp.Shared.Domain.Entities;
 
-namespace BlazorWasmApp.Client.Services.CameraService
+namespace BlazorWasmApp.Client.Services.CameraService;
+
+public class CameraService : Service<Camera>, ICameraService
 {
-    public class CameraService : Service<Camera>, ICameraService
+    public CameraService(HttpClient httpClient) : base(httpClient, SiteConstants.ApiEndpoints.Camera)
     {
-        public CameraService(HttpClient httpClient) : base(httpClient, "camera")
-        {
-        }
     }
 }
